@@ -42,8 +42,8 @@ PsyEngine состоит из четырёх основных компонент
 
 ### Требования
 
-- **Java 17+**
-- **Spigot / Paper 1.18+** (рекомендуется Paper 1.20+)
+- **Java 21+**
+- **Spigot / Paper 1.20+**
 
 ---
 
@@ -62,19 +62,19 @@ commands:
   enabled: true       # Включить встроенные команды
 
   available:
-    tower: true
-    cannon: true
-    fireball: true
-    glass: true
-    raft: true
-    landslide: true
-    info: true
-    push: true
-    clear: true
-    debug: true
-    reload: true
-    test: true
-    stats: true
+    tower: true # /physics tower
+    cannon: true # /physics cannon
+    fireball: true # /physics fireball
+    glass: true # /physics glass
+    raft: true # /physics raft
+    landslide: true # /physics landslide
+    info: true # /physics info
+    push: true # /physics push
+    clear: true # /physics clear
+    debug: true # /physics debug
+    reload: true # /physics reload
+    test: true # /physics test (stress test)
+    stats: true # /physics stats
 
   require-op: false         # false = может использовать любой игрок
   use-permissions: false    # true = использовать систему пермишенов
@@ -190,9 +190,9 @@ ICE:
 
 <dependencies>
     <dependency>
-        <groupId>com.github.YourUsername</groupId>
+        <groupId>com.github.Entervalov</groupId>
         <artifactId>PsyEngine</artifactId>
-        <version>1.0.0</version>
+        <version>1.x.x</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
@@ -210,7 +210,7 @@ dependencies {
 }
 ```
 
-Также не забудь добавить PsyEngine как софт-зависимость в твой `plugin.yml`:
+Также не забудьте добавить PsyEngine как софт-зависимость в твой `plugin.yml`:
 
 ```yaml
 name: MyPhysicsPlugin
@@ -344,7 +344,7 @@ public class MyPhysicsListener implements Listener {
 }
 ```
 
-Регистрация в твоём плагине:
+Регистрация в вашем плагине:
 
 ```java
 @Override
@@ -357,7 +357,7 @@ public void onEnable() {
 
 ## 💡 Примеры использования
 
-### Пример 1: Падающая щебень с разрушением
+### Пример 1: Падающий щебень с разрушением
 
 ```java
 public void createFallingRocks(Player player, int count) {
@@ -499,7 +499,7 @@ public class MyPhysicsListener implements Listener {
 
 ```bash
 # Клонируем репо
-git clone https://github.com/YourUsername/PsyEngine.git
+git clone https://github.com/Entervalov/PsyEngine.git
 cd PsyEngine
 
 # Собираем через Maven
@@ -513,7 +513,7 @@ java -jar target/PsyEngine-1.0.0.jar
 
 ## 📜 Лицензия
 
-Распространяется под лицензией **MIT**. Можешь использовать в личных и коммерческих проектах при сохранении указания авторства.
+Распространяется под лицензией **MIT**. Вы можете использовать в личных и коммерческих проектах при сохранении указания авторства.
 
 ---
 **Q: Как отключить звуки/частицы?**
