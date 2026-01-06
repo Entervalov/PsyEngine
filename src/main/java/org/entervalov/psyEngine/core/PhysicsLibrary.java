@@ -12,6 +12,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.entervalov.psyEngine.material.MaterialsConfig;
 import org.entervalov.psyEngine.message.MessageManager;
+import org.entervalov.psyEngine.utils.PhysicsLogger;
 
 import java.util.Map;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class PhysicsLibrary {
 
     private final Map<UUID, PhysicsEntity> entities = new ConcurrentHashMap<>();
     private final PhysicsTask task;
+    private PhysicsLogger customLogger;
 
     public PhysicsLibrary(JavaPlugin plugin) {
         instance = this;
@@ -42,6 +44,7 @@ public class PhysicsLibrary {
         long startTime = System.currentTimeMillis();
 
         config.loadConfig();
+        PhysicsLogger customLogger = new PhysicsLogger(plugin, config.getLogLevel());
         materialsConfig.load();
         messageManager.loadMessages();
 
@@ -50,6 +53,12 @@ public class PhysicsLibrary {
 
         long loadTime = System.currentTimeMillis() - startTime;
         plugin.getLogger().info("✓ PhysicsLibrary initialized for " + loadTime + "ms");
+    }
+
+    public void logToFile(String msg) {
+        if (customLogger != null) {
+            customLogger.log(msg);
+        }
     }
 
     public static PhysicsLibrary getInstance() {
@@ -90,6 +99,9 @@ public class PhysicsLibrary {
 
     public void disable() {
         if (task != null) task.cancel();
+
+        if (customLogger != null) customLogger.close();
+
         entities.values().forEach(PhysicsEntity::kill);
         entities.clear();
         plugin.getLogger().info(messageManager.getMessage("shutdown.disabled"));
@@ -103,4 +115,5 @@ public class PhysicsLibrary {
     public Map<UUID, PhysicsEntity> getEntities() { return entities; }
     public Collection<PhysicsEntity> getActiveEntities() { return entities.values(); }
     public int getActiveEntityCount() { return entities.size(); }
+}
 }
