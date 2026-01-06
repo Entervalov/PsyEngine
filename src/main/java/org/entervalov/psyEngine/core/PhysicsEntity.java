@@ -485,4 +485,3 @@ public class PhysicsEntity {
         this.impactDamageMultiplier = multiplier;
     }
 }
-}
