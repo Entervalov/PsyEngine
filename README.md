@@ -158,7 +158,7 @@ SLIME_BLOCK:
   mass: 0.8
   drag: 0.1
   friction: 0.6
-  bounciness: 0.9            # Очень прыгучий!
+  bounciness: 0.9            # Очень прыгучий
   buoyancy: 0.8
   behavior: "BOUNCY"
 
@@ -206,11 +206,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.YourUsername:PsyEngine:1.0.0")
+    compileOnly("com.github.Entervalov:PsyEngine:1.x.x")
 }
 ```
-
-> **Важно:** замени `YourUsername` на реальный никнейм GitHub, `PsyEngine` на имя репозитория, `1.0.0` на актуальный tag.
 
 Также не забудь добавить PsyEngine как софт-зависимость в твой `plugin.yml`:
 
