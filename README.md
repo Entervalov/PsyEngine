@@ -592,5 +592,4 @@ java -jar target/PsyEngine-1.0.0.jar
 Распространяется под лицензией **MIT**. Вы можете использовать в личных и коммерческих проектах при сохранении указания авторства.
 
 ---
-**Q: Как отключить звуки/частицы?**
-A: Установи `effects.sounds.enabled: false` и `effects.particles.enabled: false` в `config.yml`.
+
