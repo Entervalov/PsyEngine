@@ -36,7 +36,6 @@ public class PsyEngine extends JavaPlugin {
                 cmd.setTabCompleter(new PhysicsTabCompleter(physics));
                 getLogger().info(msg.getMessage("startup.commands_enabled"));
             } else {
-                // Полезный лог, если забыл добавить в plugin.yml
                 getLogger().warning("⚠️ Command 'psy' not found in plugin.yml! Commands will not work.");
             }
         } else {
