@@ -234,13 +234,29 @@ public class PhysicsEntity {
         if (!config.isThermalEnabled()) return;
 
         double ambient = 20.0;
-        Material m = loc.getBlock().getType();
+        Block block = loc.getBlock();
+        Material type = block.getType();
 
-        if (m == Material.LAVA) ambient = 1200.0;
-        else if (m == Material.WATER) ambient = 15.0;
+        if (type == Material.LAVA) ambient = 1200.0;
+        else if (type == Material.FIRE || type == Material.SOUL_FIRE) ambient = 400.0;
+        else if (type == Material.WATER) ambient = 15.0;
+        else if (type == Material.ICE || type == Material.BLUE_ICE) ambient = -5.0;
+        else if (type == Material.SNOW) ambient = -2.0;
 
+        if (Objects.requireNonNull(loc.getWorld()).getEnvironment() == org.bukkit.World.Environment.NETHER) {
+            ambient = Math.max(ambient, 100.0);
+        }
+
+        double k = properties.getThermalConductivity();
         double diff = ambient - currentTemperature;
-        currentTemperature += diff * properties.getThermalConductivity() * 0.1;
+
+        currentTemperature += diff * k * 0.1;
+
+        if (config.isThermalEffects()) {
+            if (currentTemperature > 100 && Math.random() < 0.1) {
+                loc.getWorld().spawnParticle(Particle.SMOKE_NORMAL, loc, 1, 0, 0.1, 0, 0);
+            }
+        }
 
         if (currentTemperature > properties.getMeltingPoint()) {
             handleBehavior(properties.getBehaviorType());
@@ -249,25 +265,45 @@ public class PhysicsEntity {
 
     private void handleBehavior(String behavior) {
         if (behavior == null) behavior = "DEFAULT";
+        if (isDead) return;
+        
+        if (config.isSafeMode()) {
+            if (!behavior.equals("MELT")) return;
+        }
 
         switch (behavior) {
             case "MELT" -> {
                 if (config.isThermalEffects()) {
-                    entity.getWorld().spawnParticle(Particle.WATER_SPLASH, entity.getLocation(), 10);
+                    entity.getWorld().spawnParticle(Particle.DRIP_WATER, entity.getLocation(), 15);
+                }
+                if (entity instanceof FallingBlock fb && fb.getMaterial() == Material.ICE) {
+                    entity.getLocation().getBlock().setType(Material.WATER);
                 }
                 kill();
             }
             case "BURN" -> {
+                if (config.isSafeMode()) return;
+
                 if (config.isThermalEffects()) {
-                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 10);
+                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 20, 0.2, 0.2, 0.2, 0.05);
+                    entity.getWorld().playSound(entity.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1f, 1f);
+                }
+                if (config.isAllowBlockPlacement()) {
+                    Block b = entity.getLocation().getBlock();
+                    if (b.getType() == Material.AIR) b.setType(Material.FIRE);
                 }
                 kill();
             }
             case "EXPLODE" -> {
-                entity.getWorld().createExplosion(entity.getLocation(), 2.0f);
+                if (config.isSafeMode()) return;
+                
+                entity.getWorld().createExplosion(
+                        entity.getLocation(),
+                        2.0f,
+                        false,
+                        config.isAllowBlockBreaking()
+                );
                 kill();
-            }
-            default -> {
             }
         }
     }
@@ -448,4 +484,5 @@ public class PhysicsEntity {
     public void setImpactDamageMultiplier(double multiplier) {
         this.impactDamageMultiplier = multiplier;
     }
+}
 }
