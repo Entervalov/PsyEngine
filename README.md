@@ -1,10 +1,10 @@
 [README-updated.md](https://github.com/user-attachments/files/24460590/README-updated.md)
 # ⚛️ PsyEngine
 
-![Java](https://img.shields.io/badge/Java-17+-orange?style=flat-square)
+![Java](https://img.shields.io/badge/Java-21+-orange?style=flat-square)
 ![Spigot](https://img.shields.io/badge/Platform-Spigot%20%7C%20Paper-yellow?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
-[![](https://jitpack.io/v/YourUsername/PsyEngine.svg)](https://jitpack.io/#YourUsername/PsyEngine)
+[![](https://jitpack.io/v/YourUsername/PsyEngine.svg)](https://jitpack.io/#Entervalov/PsyEngine)
 
 **PsyEngine** — это высокопроизводительный физический движок для Minecraft-серверов. Превращает блоки в реальные физические объекты с гравитацией, инерцией, точными RayTrace-коллизиями и термодинамикой.
 
