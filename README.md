@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/24460453/README.md)
+[README-updated.md](https://github.com/user-attachments/files/24460590/README-updated.md)
 # ⚛️ PsyEngine
 
 ![Java](https://img.shields.io/badge/Java-17+-orange?style=flat-square)
@@ -6,168 +6,179 @@
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 [![](https://jitpack.io/v/YourUsername/PsyEngine.svg)](https://jitpack.io/#YourUsername/PsyEngine)
 
-**PsyEngine** — это модульный, высокопроизводительный физический движок для Minecraft-серверов.
-Он позволяет превращать обычные блоки в физические объекты с реалистичной гравитацией, инерцией, отскоками (RayTrace-коллизии) и термодинамикой.
+**PsyEngine** — это высокопроизводительный физический движок для Minecraft-серверов. Превращает блоки в реальные физические объекты с гравитацией, инерцией, точными RayTrace-коллизиями и термодинамикой.
+
+Используется как **обычный плагин** (админы ставят в `/plugins`) или как **API библиотека** (разработчики подключают через Maven/Gradle).
 
 ---
 
 ## 🧩 Архитектура
 
-PsyEngine может использоваться в двух режимах:
+PsyEngine состоит из четырёх основных компонентов:
 
-- **Как обычный плагин** — админы ставят его в `/plugins`, а другие плагины обращаются к его API.
-- **Как библиотека** — вы подключаете его через Maven/Gradle (JitPack) и компилируете против его API.
+1. **PhysicsLibrary** — главный singleton, через который создаются физические объекты.
+2. **PhysicsEntity** — обёртка над Bukkit-сущностью, которая имеет физику.
+3. **PhysicsProperties** — свойства материала (масса, упругость, трение, поведение).
+4. **PhysicsListener** — обработчик ивентов (столкновения, взаимодействия).
 
-Главная точка входа в API — класс `PhysicsLibrary` (Singleton), через который вы создаёте и управляете физическими объектами (`PhysicsEntity`) и их свойствами (`PhysicsProperties`).
+**Как обычный плагин:**
+- Админ ставит `PsyEngine-1.0.0.jar` в `/plugins`.
+- Команды `/physics <subcommand>` доступны игрокам.
+- Конфиги в `plugins/PsyEngine/config.yml` и `materials.yml`.
+
+**Как API библиотека:**
+- Разработчик подключает зависимость через Maven/Gradle.
+- Использует `PhysicsLibrary.getInstance()` в своём плагине.
+- Вызывает методы API для создания физических объектов и обработки событий.
 
 ---
 
 ## 📦 Установка на сервер (для админов)
 
-1. Скачайте последнюю версию `PsyEngine-x.y.z.jar` из релизов GitHub.
-2. Поместите файл в папку `plugins/` вашего Spigot/Paper-сервера.
+1. Скачайте `PsyEngine-1.0.0.jar` из раздела Releases на GitHub.
+2. Поместите файл в папку `plugins/`.
 3. Запустите или перезапустите сервер.
-4. После первого запуска в папке `plugins/PsyEngine/` появится `config.yml` и файлы сообщений.
+4. Отредактируйте `plugins/PsyEngine/config.yml` по необходимости.
 
 ### Требования
 
-- Java **17+**
-- Spigot / Paper **1.18+** (рекомендуется последняя стабильная Paper)
+- **Java 17+**
+- **Spigot / Paper 1.18+** (рекомендуется Paper 1.20+)
 
 ---
 
 ## ⚙️ Конфигурация `config.yml`
-
-Ниже пример полного конфига с комментариями.
 
 ```yaml
 # ==========================================
 #            PSYENGINE CONFIG
 # ==========================================
 
-# --- Основные настройки физики ---
-physics:
-  # Гравитация, применяемая к объектам за тик
-  # Выше значение — быстрее падение
-  gravity: 0.05
+general:
+  language: "ru"      # en, ru
+  debug-mode: false
 
-  # Сопротивление воздуха (множитель скорости каждый тик)
-  # 1.0 = нет сопротивления, 0.9 = сильное замедление
-  air-resistance: 0.99
-
-  # Трение при контакте с землёй
-  # Чем меньше значение, тем сильнее замедление по X/Z при касании блока
-  ground-friction: 0.7
-
-  # Использовать ли RayTrace для коллизий
-  # true — точные столкновения со стенами/потолком (дороже по ресурсам)
-  # false — упрощённая модель (только "под ногами")
-  use-raytrace: true
-
-# --- Ограничения и оптимизация ---
-limits:
-  # Максимальное количество одновременно существующих физических объектов.
-  # При превышении лимита старые/дальние объекты будут удаляться.
-  max-active-entities: 500
-
-  # Высота, ниже которой объект принудительно удаляется (анти-утечка под бедрок).
-  auto-kill-y: -64
-
-  # Порог скорости, ниже которого объект считается "уснувшим" (sleep mode)
-  # и перестаёт обрабатываться каждый тик для экономии ресурсов.
-  sleep-threshold: 0.05
-
-# --- Взаимодействие с миром и урон ---
-interactions:
-  # Наносить ли урон сущностям (игрокам/мобам) при столкновении
-  allow-entity-damage: true
-
-  # Базовый множитель урона от массы и скорости
-  damage-multiplier: 2.0
-
-  # Минимальная сила удара по блоку, при которой он может быть разрушен
-  # (используется для поведения "EXPLODE"/"BREAKING")
-  block-break-force: 50.0
-
-  # Проигрывать ли звуки при столкновениях
-  collision-sounds: true
-
-  # Порождавать ли частицы при столкновениях
-  collision-particles: true
-
-# --- Настройки команд ---
 commands:
-  # Глобальное включение/выключение встроенных команд
-  enabled: true
+  enabled: true       # Включить встроенные команды
 
-  # Требовать ли OP-статус для использования команд
-  require-op: true
+  available:
+    tower: true
+    cannon: true
+    fireball: true
+    glass: true
+    raft: true
+    landslide: true
+    info: true
+    push: true
+    clear: true
+    debug: true
+    reload: true
+    test: true
+    stats: true
 
-  # Отключённые подкоманды (по именам)
-  # Доступные подкоманды см. ниже
-  disabled-subcommands:
-    - "nuke"  # пример, по умолчанию может быть пустой список
+  require-op: false         # false = может использовать любой игрок
+  use-permissions: false    # true = использовать систему пермишенов
+  permission-prefix: "physicsengine"
 
-# --- Логирование и отладка ---
+physics:
+  gravity: 0.08             # Сила гравитации (м/тик²)
+  max-velocity: 50.0        # Макс. скорость объекта
+  min-velocity: 0.01        # Мин. скорость перед остановкой
+
+water:
+  buoyancy-multiplier: 1.2  # Плавучесть в воде
+  drag-in-water-multiplier: 2.0
+  splash-velocity-threshold: 1.5
+  splash-particles: true
+  splash-sound: true
+
+optimization:
+  sleep-mode: true          # Усыплять ли неподвижные объекты
+  sleep-threshold: 0.1      # Порог скорости для сна
+  sleep-delay: 40           # Тики перед усыпанием
+  solidify-on-sleep: true   # Преобразовать в обычный блок при сне
+
+performance:
+  max-active-entities: 500  # Макс. кол-во объектов одновременно
+  update-interval: 1        # Обновление каждый N тик
+  unload-distance: 500      # Расстояние выгрузки объектов
+  warn-on-limit: true
+  auto-cleanup: true
+
+effects:
+  particles:
+    enabled: true
+    collision-spark: true
+    water-splash: true
+    thermal-effects: true
+    sleep-indicator: true
+
+  sounds:
+    enabled: true
+    collision-sound: true
+    water-splash-sound: true
+    thermal-sound: true
+
 logging:
-  # Логировать создание/удаление физ. объектов
-  entities: true
+  level: "INFO"             # DEBUG, INFO, WARNING, ERROR
+  log-entity-spawns: false
+  log-collisions: false
+  log-performance: false
+  log-file: "physicsengine.log"
 
-  # Логировать серьёзные ошибки
-  errors: true
-
-  # Логировать отладочную информацию (может спамить консоль)
-  debug: false
+advanced:
+  collision-damage-multiplier: 1.5
+  thermal-conductivity: 0.3
+  thermal-enabled: true
+  allow-block-breaking: true
+  allow-block-placement: true
+  allow-entity-damage: true
+  check-other-plugins: true
+  safe-mode: false
 ```
-
-> **Примечание:** имена секций должны совпадать с теми, что использует ваш `PhysicsConfig`
-> (`getMaxActiveEntities()`, `isCommandsEnabled()`, `isCommandEnabled(name)` и т.д.). При изменении API — обновляйте пример.
 
 ---
 
-## 🕹 Команды и права
+## 📊 Конфигурация материалов `materials.yml`
 
-Основная команда: **`/psy`** (в `plugin.yml` также можно добавить алиас `/physics`).
-
-Пример секции `commands` в `plugin.yml`:
+Каждый блок может иметь **уникальные физические свойства**:
 
 ```yaml
-commands:
-  psy:
-    description: Main command of PsyEngine
-    usage: /psy <subcommand>
-    aliases: [physics]
+IRON_BLOCK:
+  mass: 1.8                  # Масса (влияет на инерцию и урон)
+  drag: 0.02                 # Сопротивление воздуха
+  friction: 0.3              # Трение об землю
+  bounciness: 0.2            # Упругость при отскоке (0-1)
+  buoyancy: 0.0              # Плавучесть в воде (0 = тонет)
+  thermal-conductivity: 0.9  # Проводимость тепла
+  break-threshold: 50.0      # Сила удара для разрушения
+  behavior: "METAL"          # Поведение (кастомный тип)
+
+SLIME_BLOCK:
+  mass: 0.8
+  drag: 0.1
+  friction: 0.6
+  bounciness: 0.9            # Очень прыгучий!
+  buoyancy: 0.8
+  behavior: "BOUNCY"
+
+ICE:
+  mass: 0.9
+  drag: 0.02
+  friction: 0.05             # Очень скользкий
+  bounciness: 0.1
+  buoyancy: 0.92
+  melting-point: 0.0
+  behavior: "MELT"
 ```
-
-### Подкоманды (если не отключены в конфиге)
-
-| Команда       | Описание                                      |
-|--------------|-----------------------------------------------|
-| `/psy tower` | Строит вертикальную башню из физических блоков |
-| `/psy cannon`| Создаёт пушку и выстреливает ядром             |
-| `/psy fireball` | Запускает огненный снаряд                   |
-| `/psy raft`  | Создаёт плот для демонстрации плавучести       |
-| `/psy landslide` | Создаёт оползень из земли                  |
-| `/psy glass` | Спавнит стеклянный блок для теста ломаемости   |
-| `/psy info`  | Показывает информацию о ближайшем объекте      |
-| `/psy stats` | Показывает статистику движка                   |
-| `/psy push`  | Толкает ближайший физический объект вперёд     |
-| `/psy clear` | Удаляет все физические объекты                 |
-| `/psy debug` | Переключает режим отладки/визуализации         |
-| `/psy reload`| Перезагружает конфиг и сообщения плагина       |
-| `/psy test`  | Массово спавнит объекты для стресс-теста       |
-
-Права (permissions) ты можешь реализовать отдельно, но базово конфиг `require-op: true` уже ограничивает доступ только OP-игрокам.
 
 ---
 
 ## 🔌 Подключение как библиотеки (Maven / Gradle)
 
-Если ты хочешь использовать PsyEngine как API в своём плагине, подключи его через **JitPack**.
+Используй **JitPack** для подключения PsyEngine как зависимость.
 
-### 1. Добавь JitPack-репозиторий
-
-**Maven:**
+### Maven
 
 ```xml
 <repositories>
@@ -176,299 +187,336 @@ commands:
         <url>https://jitpack.io</url>
     </repository>
 </repositories>
-```
 
-**Gradle (Kotlin DSL):**
-
-```kotlin
-repositories {
-    maven("https://jitpack.io")
-}
-```
-
-### 2. Добавь зависимость
-
-```xml
 <dependencies>
     <dependency>
         <groupId>com.github.YourUsername</groupId>
         <artifactId>PsyEngine</artifactId>
-        <version>1.0.0</version> <!-- или актуальный tag релиза -->
+        <version>1.0.0</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
 ```
 
-**Gradle:**
+### Gradle (Kotlin)
 
 ```kotlin
+repositories {
+    maven("https://jitpack.io")
+}
+
 dependencies {
     compileOnly("com.github.YourUsername:PsyEngine:1.0.0")
 }
 ```
 
-> **Важно:** замени `YourUsername` и версию на реальные данные из своего GitHub/JitPack.
+> **Важно:** замени `YourUsername` на реальный никнейм GitHub, `PsyEngine` на имя репозитория, `1.0.0` на актуальный tag.
+
+Также не забудь добавить PsyEngine как софт-зависимость в твой `plugin.yml`:
+
+```yaml
+name: MyPhysicsPlugin
+version: 1.0
+main: com.example.MyPlugin
+softdepend: [PsyEngine]
+```
 
 ---
 
-## 🧠 Использование API плагина
+## 🎮 API для разработчиков
 
-### Получение инстанса `PhysicsLibrary`
-
-Обычно PsyEngine регистрирует себя как Singleton:
+### 1. Получение инстанса PhysicsLibrary
 
 ```java
+// PsyEngine работает как Singleton
 PhysicsLibrary physics = PhysicsLibrary.getInstance();
+
+if (physics == null) {
+    // PsyEngine не установлен на сервер
+    getLogger().warning("PsyEngine not found!");
+    return;
+}
 ```
 
-Если ты вызываешь его **изнутри самого плагина PsyEngine**, у тебя уже есть ссылка в твоём главном классе:
+### 2. Создание физического объекта
 
 ```java
-public class PsyEnginePlugin extends JavaPlugin {
-
-    private PhysicsLibrary physics;
-
-    @Override
-    public void onEnable() {
-        physics = new PhysicsLibrary(this);
-        // ...
-    }
-
-    public PhysicsLibrary getPhysics() {
-        return physics;
+public void createPhysicsBlock(Player player) {
+    Location spawnLoc = player.getLocation().add(0, 5, 0);
+    
+    // Спавним блок железа с физикой
+    PhysicsEntity entity = physics.spawnPhysicsBlock(spawnLoc, Material.IRON_BLOCK);
+    
+    if (entity != null) {
+        // Устанавливаем начальную скорость
+        Vector velocity = player.getLocation().getDirection().multiply(2.0);
+        entity.setVelocity(velocity);
+        
+        player.sendMessage("✓ Физический блок создан!");
     }
 }
 ```
 
-Если ты во **внешнем плагине**, можешь получить экземпляр через сервис или статический `getInstance()`.
-
----
-
-## 🎮 Базовые операции с API
-
-### 1. Спавн физического блока
+### 3. Работа с PhysicsProperties
 
 ```java
-// Допустим, у нас есть PhysicsLibrary physics
-
-Location loc = player.getLocation().add(0, 5, 0);
-
-PhysicsEntity entity = physics.spawnPhysicsBlock(loc, Material.STONE);
-
-if (entity != null) {
-    // Настройка свойств
-    PhysicsProperties props = PhysicsProperties.heavy()
-            .setBounciness(0.1f)
-            .setBehaviorType("ROCK");
-
-    entity.applyProperties(props);
-
-    // Задание начальной скорости
-    Vector initialVelocity = player.getLocation().getDirection().multiply(2.0);
-    entity.setVelocity(initialVelocity);
+public void configureBlock(PhysicsEntity entity) {
+    PhysicsProperties props = entity.getProperties();
+    
+    // Изменяем свойства на лету
+    props.setMass(10.0f);           // Тяжелый объект
+    props.setBounciness(0.5f);      // Хорошо отскакивает
+    props.setBehaviorType("CUSTOM"); // Кастомный тип
+    
+    // Или используй готовые пресеты
+    // PhysicsProperties.heavy();   // Масса 20, низкая упругость
+    // PhysicsProperties.bouncy();  // Высокая упругость
+    // PhysicsProperties.floaty();  // Высокая плавучесть
 }
 ```
 
-### 2. Работа с `PhysicsProperties`
+### 4. Добавление импульса (толчка)
 
 ```java
-PhysicsEntity e = /* ... */;
-PhysicsProperties p = e.getProperties();
-
-p.setMass(5.0f);          // Масса влияет на инерцию и силу удара
-p.setBounciness(0.7f);    // Упругость (0 = не отскакивает, 1 = идеально упругий)
-p.setBehaviorType("METAL"); // Поведение (можно использовать в своих логиках)
-
-// Можно копировать свойства
-PhysicsProperties template = PhysicsProperties.bouncy();
-p.copyFrom(template);
+// Толкнуть объект в направлении взгляда игрока
+public void pushEntity(Player player, PhysicsEntity entity) {
+    Vector impulse = player.getLocation().getDirection().multiply(3.0);
+    entity.addVelocity(impulse);
+}
 ```
 
-### 3. Добавление импульса / силы
-
-```java
-// Добавить импульс по направлению взгляда игрока
-Vector impulse = player.getLocation().getDirection().multiply(1.5);
-entity.addVelocity(impulse);
-```
-
-### 4. Уничтожение объекта
+### 5. Удаление объекта
 
 ```java
 entity.kill();
 ```
 
----
-
-## 🧲 RayTrace-коллизии и отскоки
-
-PsyEngine использует `World#rayTraceBlocks` для точного определения столкновений.
-Это позволяет корректно обрабатывать удары о стены, потолки и наклонные поверхности.
-
-Если в `config.yml` включено `physics.use-raytrace: true`, то при каждом тике:
-
-- Строится луч от текущей позиции по направлению скорости.
-- Если луч пересекает блок, рассчитывается точка удара и нормаль поверхности.
-- Вектор скорости отражается по формуле:
+### 6. Проверка состояния
 
 ```java
-// R = V - (1 + bounciness) * (V·N) * N
-private void reflect(Vector v, Vector n, float bounciness) {
-    double dot = v.dot(n);
-    if (dot > 0) return; // уже отлетает от поверхности
-
-    Vector change = n.clone().multiply(dot * (1.0 + bounciness));
-    v.subtract(change);
-
-    if (v.lengthSquared() < 0.001) v.zero();
+// Проверить, "спит" ли объект (неподвижен)
+if (entity.isSleeping()) {
+    player.sendMessage("Объект неподвижен");
 }
-```
 
-Ты можешь завязываться на это поведение в своих ивентах (см. ниже).
+// Получить текущую скорость
+double speed = entity.getVelocity().length();
+
+// Получить материал
+org.bukkit.entity.FallingBlock fb = (org.bukkit.entity.FallingBlock) entity.getEntity();
+Material material = fb.getMaterial();
+```
 
 ---
 
 ## 📡 События (Events)
 
-PsyEngine публикует Bukkit-события, через которые можно реагировать на физические взаимодействия.
+PsyEngine публикует Bukkit-события, на которые можно подписаться.
 
-### Пример: `PhysicsCollideEvent`
+### PhysicsCollideEvent
+
+Вызывается, когда физический объект сталкивается с блоком или другой сущностью.
 
 ```java
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import ru.physicsengine.events.PhysicsCollideEvent;
 
 public class MyPhysicsListener implements Listener {
 
     @EventHandler
     public void onPhysicsCollide(PhysicsCollideEvent event) {
         PhysicsEntity entity = event.getPhysicsEntity();
-        double force = event.getImpactForce();
         Block hitBlock = event.getHitBlock();
-
-        // Сильный удар — ломаем блок
-        if (force > 40.0 && hitBlock != null) {
+        double impactForce = event.getImpactForce();
+        
+        // Пример: сильный удар разрушает блок
+        if (impactForce > 50.0 && hitBlock != null) {
             hitBlock.breakNaturally();
+            hitBlock.getWorld().createExplosion(hitBlock.getLocation(), 1.0f, false, true);
         }
+        
+        // Пример: специальное поведение для TNT
+        String behavior = entity.getProperties().getBehaviorType();
+        if ("EXPLODE".equalsIgnoreCase(behavior) && impactForce > 20.0) {
+            entity.kill();
+            hitBlock.getWorld().createExplosion(hitBlock.getLocation(), 3.0f);
+        }
+    }
+}
+```
 
-        // Особое поведение для типа EXPLODE
-        if ("EXPLODE".equalsIgnoreCase(entity.getProperties().getBehaviorType()) && force > 30.0) {
-            hitBlock.getWorld().createExplosion(hitBlock.getLocation(), 2.0f, false, false);
+Регистрация в твоём плагине:
+
+```java
+@Override
+public void onEnable() {
+    getServer().getPluginManager().registerEvents(new MyPhysicsListener(), this);
+}
+```
+
+---
+
+## 💡 Примеры использования
+
+### Пример 1: Падающая щебень с разрушением
+
+```java
+public void createFallingRocks(Player player, int count) {
+    Location center = player.getLocation().add(10, 20, 0);
+    
+    for (int i = 0; i < count; i++) {
+        double offsetX = Math.random() * 5 - 2.5;
+        double offsetZ = Math.random() * 5 - 2.5;
+        
+        Location spawnLoc = center.clone().add(offsetX, i * 1.2, offsetZ);
+        PhysicsEntity rock = physics.spawnPhysicsBlock(spawnLoc, Material.STONE);
+        
+        if (rock != null) {
+            // Легко повреждается при ударе
+            rock.getProperties().setBreakThreshold(15.0f);
+            rock.getProperties().setBehaviorType("ROCK");
+        }
+    }
+}
+```
+
+### Пример 2: Пушка (снаряд с взрывом)
+
+```java
+public void fireCannonball(Player player) {
+    Location muzzle = player.getEyeLocation().add(
+        player.getLocation().getDirection().multiply(2)
+    );
+    
+    PhysicsEntity cannonball = physics.spawnPhysicsBlock(muzzle, Material.IRON_BLOCK);
+    
+    if (cannonball != null) {
+        // Настройки снаряда
+        cannonball.getProperties().setMass(5.0f);
+        cannonball.getProperties().setBounciness(0.1f); // Мало отскакивает
+        cannonball.getProperties().setBehaviorType("EXPLOSIVE");
+        
+        // Скорость выстрела
+        Vector shootDir = player.getLocation().getDirection().multiply(3.0);
+        cannonball.setVelocity(shootDir);
+        
+        // Урон при ударе
+        cannonball.setDamageOnImpact(true);
+        cannonball.setImpactDamageMultiplier(5.0);
+        
+        player.getWorld().playSound(muzzle, Sound.ENTITY_GENERIC_EXPLODE, 1.5f, 0.8f);
+    }
+}
+```
+
+### Пример 3: Плавучий объект в воде
+
+```java
+public void createFloatingItem(Player player) {
+    Location loc = player.getLocation();
+    
+    PhysicsEntity floatingBlock = physics.spawnPhysicsBlock(loc, Material.SLIME_BLOCK);
+    
+    if (floatingBlock != null) {
+        // Высокая плавучесть
+        floatingBlock.getProperties().setBuoyancy(0.95f);
+        
+        // Мало трения (гладкий)
+        floatingBlock.getProperties().setFriction(0.2f);
+        
+        // Хорошо отскакивает
+        floatingBlock.getProperties().setBounciness(0.8f);
+        
+        floatingBlock.getProperties().setBehaviorType("FLOATY");
+    }
+}
+```
+
+### Пример 4: Реагирование на столкновение
+
+```java
+public class MyPhysicsListener implements Listener {
+
+    @EventHandler
+    public void onPhysicsCollide(PhysicsCollideEvent event) {
+        PhysicsEntity entity = event.getPhysicsEntity();
+        Block block = event.getHitBlock();
+        double force = event.getImpactForce();
+        
+        String behavior = entity.getProperties().getBehaviorType();
+        
+        // Огненный объект поджигает блоки
+        if ("FIRE".equalsIgnoreCase(behavior) && block != null) {
+            if (block.getType() == Material.OAK_PLANKS) {
+                block.setType(Material.FIRE);
+            }
+        }
+        
+        // Лёд тает при соприкосновении
+        if ("MELT".equalsIgnoreCase(behavior) && block != null) {
+            if (block.getType() == Material.ICE) {
+                block.setType(Material.WATER);
+            }
+        }
+        
+        // Взрывчатка
+        if ("EXPLOSIVE".equalsIgnoreCase(behavior) && force > 30.0) {
+            entity.getEntity().getWorld().createExplosion(
+                entity.getEntity().getLocation(),
+                2.5f,
+                true,
+                true
+            );
             entity.kill();
         }
     }
 }
 ```
 
-Регистрация листенера во внешнем плагине:
-
-```java
-@Override
-public void onEnable() {
-    Bukkit.getPluginManager().registerEvents(new MyPhysicsListener(), this);
-}
-```
-
 ---
 
-## 🧪 Встроенные демо-команды (как пример использования API)
+## 🧪 Команды для тестирования
 
-Все команды в классе `PhysicsCommands` демонстрируют реальные паттерны работы с API:
+Если плагин работает на сервере, можешь использовать встроенные команды для теста:
 
-- **`tower`** — последовательный спавн нескольких блоков с разным Y.
-- **`cannon`** — создание ядра с кастомными свойствами (`heavy()`, низкий `bounciness`, поведение `EXPLODE`).
-- **`fireball`** — использование поведения `BURN` для огненных объектов.
-- **`raft`** — спавн нескольких блоков рядом для демонстрации плавучести.
-- **`test`** — массовый спавн объектов с проверкой лимита `max-active-entities`.
-
-Можешь использовать этот класс как референс при написании собственных интеграций.
-
----
-
-## 🧵 Tab-комплитер
-
-Для удобства игроков реализован `PhysicsTabCompleter`, который подсказывает только включённые в конфиг подкоманды:
-
-```java
-public class PhysicsTabCompleter implements TabCompleter {
-
-    private final PhysicsLibrary physics;
-    private final List<String> subCommands = List.of(
-            "tower", "cannon", "fireball", "raft", "landslide",
-            "stats", "info", "clear", "push", "debug",
-            "glass", "reload", "test"
-    );
-
-    public PhysicsTabCompleter(PhysicsLibrary physics) {
-        this.physics = physics;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length == 1) {
-            List<String> available = new ArrayList<>();
-            for (String cmd : subCommands) {
-                if (physics.getConfig().isCommandEnabled(cmd)) {
-                    available.add(cmd);
-                }
-            }
-            List<String> completions = new ArrayList<>();
-            StringUtil.copyPartialMatches(args[0], available, completions);
-            Collections.sort(completions);
-            return completions;
-        }
-        return Collections.emptyList();
-    }
-}
 ```
-
-Регистрация в `onEnable`:
-
-```java
-@Override
-public void onEnable() {
-    saveDefaultConfig();
-
-    physics = new PhysicsLibrary(this);
-    msg = physics.getMessageManager();
-
-    if (PhysicsLibrary.getInstance() == null) {
-        getLogger().severe("Initialization error PhysicsEngine!");
-        getServer().getPluginManager().disablePlugin(this);
-        return;
-    }
-
-    PluginCommand cmd = getCommand("psy");
-    if (cmd != null) {
-        cmd.setExecutor(new PhysicsCommands(physics));
-        cmd.setTabCompleter(new PhysicsTabCompleter(physics));
-    }
-
-    getServer().getPluginManager().registerEvents(new PhysicsListener(physics), this);
-}
+/physics tower       — Строит башню из физических блоков
+/physics cannon      — Выстреливает ядром
+/physics fireball    — Запускает огненный снаряд
+/physics raft        — Создаёт плот на воде
+/physics glass       — Спавнит стекло (проверка ломаемости)
+/physics info        — Инфо о ближайшем объекте
+/physics stats       — Статистика движка
+/physics clear       — Удаляет все физ. объекты
+/physics debug       — Визуализация векторов
+/physics reload      — Перезагрузить конфиг
 ```
 
 ---
 
 ## 🏗 Сборка исходников
 
-1. Клонируй репозиторий:
+Если хочешь модифицировать PsyEngine:
 
 ```bash
+# Клонируем репо
 git clone https://github.com/YourUsername/PsyEngine.git
 cd PsyEngine
-```
 
-2. Собери проект через Maven:
-
-```bash
+# Собираем через Maven
 mvn clean package
-```
 
-3. Готовый `PsyEngine-x.y.z.jar` появится в папке `target/`.
+# Готовый JAR в target/
+java -jar target/PsyEngine-1.0.0.jar
+```
 
 ---
 
 ## 📜 Лицензия
 
-Проект распространяется под лицензией **MIT**. Ты можешь свободно использовать, форкать и модифицировать его в своих проектах, включая коммерческие, при сохранении указания авторства.
+Распространяется под лицензией **MIT**. Можешь использовать в личных и коммерческих проектах при сохранении указания авторства.
+
+---
+**Q: Как отключить звуки/частицы?**
+A: Установи `effects.sounds.enabled: false` и `effects.particles.enabled: false` в `config.yml`.
