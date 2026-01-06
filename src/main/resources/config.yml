@@ -1,0 +1,87 @@
+# PhysicsEngine Configuration File
+
+general:
+  language: "ru"
+  debug-mode: false
+
+commands:
+  enabled: true
+
+  available:
+    tower: true                    # /physics tower
+    cannon: true                   # /physics cannon
+    fireball: true                 # /physics fireball
+    glass: true                    # /physics glass
+    raft: true                     # /physics raft
+    landslide: true                # /physics landslide
+    info: true                     # /physics info
+    push: true                      # /physics push
+    clear: true                    # /physics clear
+    debug: true                    # /physics debug
+    reload: true                   # /physics reload
+    test: true                     # /physics test
+    stats: true                    # /physics stats
+
+  require-op: false
+
+  use-permissions: false
+  permission-prefix: "physicsengine"
+
+physics:
+  gravity: 0.08
+  max-velocity: 50.0
+  min-velocity: 0.01
+
+water:
+  buoyancy-multiplier: 1.2
+  drag-in-water-multiplier: 2.0
+  splash-velocity-threshold: 1.5
+  splash-particles: true
+  splash-sound: true
+
+optimization:
+  sleep-mode: true
+  sleep-threshold: 0.1
+  sleep-delay: 40
+  solidify-on-sleep: true
+
+performance:
+  max-active-entities: 500
+  update-interval: 1
+  unload-distance: 500
+  warn-on-limit: true
+  auto-cleanup: true
+
+effects:
+  particles:
+    enabled: true
+    collision-spark: true
+    water-splash: true
+    thermal-effects: true
+    sleep-indicator: true
+
+  sounds:
+    enabled: true
+    collision-sound: true
+    water-splash-sound: true
+    thermal-sound: true
+
+logging:
+  level: "INFO"
+  log-entity-spawns: false
+  log-collisions: false
+  log-performance: false
+  log-file: "physicsengine.log"
+
+advanced:
+  collision-damage-multiplier: 1.5
+
+  thermal-conductivity: 0.3
+  thermal-enabled: true
+
+  allow-block-breaking: true
+  allow-block-placement: true
+  allow-entity-damage: true
+
+  check-other-plugins: true
+  safe-mode: false

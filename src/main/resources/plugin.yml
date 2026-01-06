@@ -1,0 +1,72 @@
+name: PsyEngine
+version: '1.0.0'
+main: org.entervalov.psyEngine.PsyEngine
+api-version: '1.20'
+authors: [ entervalov ]
+
+commands:
+  physics:
+    usage: "/physics <tower|cannon|fireball|glass|raft|landslide|info|push|clear|debug|reload|test|stats>"
+    aliases: [phys, pe]
+
+permissions:
+  physicsengine.*:
+    default: op
+    children:
+      physicsengine.use: true
+      physicsengine.tower: true
+      physicsengine.cannon: true
+      physicsengine.fireball: true
+      physicsengine.glass: true
+      physicsengine.raft: true
+      physicsengine.landslide: true
+      physicsengine.info: true
+      physicsengine.push: true
+      physicsengine.clear: true
+      physicsengine.debug: true
+      physicsengine.reload: true
+      physicsengine.test: true
+      physicsengine.stats: true
+
+  physicsengine.use:
+    default: true
+
+  physicsengine.tower:
+    description: /physics tower
+    default: true
+  physicsengine.cannon:
+    description: /physics cannon
+    default: true
+  physicsengine.fireball:
+    description: /physics fireball
+    default: true
+  physicsengine.glass:
+    description: /physics glass
+    default: true
+  physicsengine.raft:
+    description: /physics raft
+    default: true
+  physicsengine.landslide:
+    description: /physics landslide
+    default: true
+  physicsengine.info:
+    description: /physics info
+    default: true
+  physicsengine.push:
+    description: /physics push
+    default: true
+  physicsengine.clear:
+    description: /physics clear
+    default: op
+  physicsengine.debug:
+    description: /physics debug
+    default: op
+  physicsengine.reload:
+    description: /physics reload
+    default: op
+  physicsengine.test:
+    description: /physics test
+    default: op
+  physicsengine.stats:
+    description: /physics stats
+    default: true

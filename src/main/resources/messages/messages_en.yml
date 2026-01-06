@@ -1,0 +1,315 @@
+# PhysicsEngine Messages (English)
+
+startup:
+  loaded: "§a✓ PhysicsLibrary initialized!"
+  enabled: "§a✓ PsyEngine enabled and ready!"
+  init_time: "§a✓ Initialization finished in {0}ms"
+  commands_enabled: "§6[Commands] Command interface ENABLED"
+  commands_disabled: "§6[Commands] Commands are disabled (library mode)"
+  library_mode: "§6[Library Mode] Plugin runs as a pure library"
+  safe_mode_enabled: "§e⚠️ SAFE MODE enabled (lower performance)"
+
+shutdown:
+  disabled: "§c✓ PsyEngine disabled!"
+  cleanup: "§c✓ Cleaned up {0} physics entities"
+  task_cancelled: "§c✓ Physics update task cancelled"
+
+error:
+  not_player: "§cOnly players can use this command!"
+  permission: "§cYou don't have permission to use this command!"
+  require_op: "§cOnly operators can use this command!"
+  command_disabled: "§cThis command is disabled in config!"
+  commands_disabled_global: "§cPhysics commands are disabled in config (commands.enabled = false)"
+  max_entities: "§cPhysics entity limit reached: §f{0}/{1}"
+  unknown_material: "§cUnknown material in config: §f{0}"
+  internal: "§cInternal error: §f{0}"
+  limit_reached: "§c⚠️ Physics entity limit reached!"
+  null_world: "§cWorld not found!"
+  null_location: "§cLocation is not set!"
+  loading_failed: "§cFailed to load configuration!"
+
+command:
+  help:
+    header: "§e╔════════════════════════════════════╗"
+    title: "§e║ §6PsyEngine - Physics Commands§e      ║"
+    divider: "§e╠════════════════════════════════════╣"
+    tower: "§e║§6 /physics tower §7- Falling tower (5 blocks)"
+    cannon: "§e║§6 /physics cannon §7- Cannon with iron ball"
+    fireball: "§e║§6 /physics fireball §7- Fireball (MAGMA)"
+    glass: "§e║§6 /physics glass §7- Glass block (bouncy)"
+    raft: "§e║§6 /physics raft §7- Floating raft (wood)"
+    landslide: "§e║§6 /physics landslide §7- Landslide (random)"
+    info: "§e║§6 /physics info §7- Info about nearest entity"
+    push: "§e║§6 /physics push §7- Push nearest entity"
+    clear: "§e║§6 /physics clear §7- Remove all entities"
+    debug: "§e║§6 /physics debug §7- Toggle vector visualization"
+    reload: "§e║§6 /physics reload §7- Reload configs (OP)"
+    test: "§e║§6 /physics test §7- Stress test (100 blocks)"
+    stats: "§e║§6 /physics stats §7- Entity statistics"
+    footer: "§e╚════════════════════════════════════╝"
+    no_commands: "§c✗ Commands are disabled in config"
+
+  tower:
+    create: "§eCreating a stone tower..."
+    creating: "§e█ Building tower..."
+    complete: "§a✓ Tower created! (5 blocks)"
+    failed: "§c✗ Failed to create tower"
+
+  cannon:
+    setup: "§ePreparing the cannon..."
+    fire: "§a✓ BOOM! Fired! 💥"
+    fired: "§a✓ Cannonball launched at 3 m/s"
+    loading: "§e█ Loading the cannon..."
+    failed: "§c✗ Cannon failed to fire"
+
+  fireball:
+    launch: "§a✓ Fireball launched! 🔥"
+    launching: "§e█ Launching fireball..."
+    speed: "§a✓ Speed: §f2.0 m/s"
+    failed: "§c✗ Failed to create fireball"
+
+  glass:
+    created: "§aGlass spawned above you! 🪟"
+    creating: "§e█ Creating glass block..."
+    bouncy: "§a✓ Bounce: 60% (high bounce!)"
+    failed: "§c✗ Failed to create glass"
+
+  raft:
+    created: "§aRaft created! Sail away! 🚤"
+    creating: "§e█ Creating wooden raft..."
+    ready: "§a✓ Raft ready (3 OAK LOG blocks)"
+    floating: "§a✓ Raft is floating!"
+    failed: "§c✗ Failed to create raft"
+
+  landslide:
+    created: "§aLandslide created! 💨"
+    creating: "§e█ Triggering landslide..."
+    falling: "§a✓ Blocks are falling randomly!"
+    complete: "§a✓ Landslide finished"
+    failed: "§c✗ Landslide failed"
+
+  info:
+    header: "§e╔════════════════════════════════════╗"
+    title: "§e║ §6Entity Information§e                 ║"
+    divider: "§e╠════════════════════════════════════╣"
+    material: "§e║ §7Material: §f{0}"
+    velocity: "§e║ §7Velocity: §f{0} m/s"
+    state: "§e║ §7State: {0}"
+    on_ground: "§e║ §7On ground: §f{0}"
+    in_water: "§e║ §7In water: §f{0}"
+    mass: "§e║ §7Mass: §f{0} kg"
+    behavior: "§e║ §7Behavior: §f{0}"
+    drag: "§e║ §7Drag: §f{0}"
+    friction: "§e║ §7Friction: §f{0}"
+    temperature: "§e║ §7Temperature: §f{0}°C"
+    footer: "§e╚════════════════════════════════════╝"
+    sleeping: "§b💤 Sleeping (Zzz)"
+    active: "§a⚡ Active"
+    not_found: "§c✗ No physics entities nearby!"
+    searching: "§e█ Searching nearest entity..."
+
+  push:
+    success: "§a✓ Entity pushed! 💪"
+    pushing: "§e█ Pushing entity..."
+    none: "§c✗ No entities to push nearby!"
+    force: "§a✓ Push force: 2.0 vector/s"
+
+  clear:
+    success: "§a✓ Removed §f{0}§a physics entities"
+    clearing: "§e█ Clearing physics entities..."
+    no_entities: "§c✗ Nothing to remove!"
+    empty: "§7No physics entities in the world"
+
+  stats:
+    header: "§e╔════════════════════════════════════╗"
+    title: "§e║ §6Physics Statistics§e                 ║"
+    divider: "§e╠════════════════════════════════════╣"
+    active: "§e║ §6Active entities: §f{0}"
+    sleeping: "§e║ §6Sleeping entities: §f{0}"
+    total: "§e║ §6Total entities: §f{0}"
+    limit: "§e║ §6Limit: §f{0}"
+    usage: "§e║ §6Usage: §f{0}%"
+    footer: "§e╚════════════════════════════════════╝"
+    empty: "§7No active physics entities"
+    cpu_low: "§a✓ CPU usage: low"
+    cpu_medium: "§6⚠️ CPU usage: medium"
+    cpu_high: "§c✗ CPU usage: high"
+
+  debug:
+    header: "§e═══════════════════════════════════"
+    title: "§6 Debug Visual Mode"
+    on: "§a✓ [Physics] Debug visualization: §fON §a✓"
+    off: "§c✗ [Physics] Debug visualization: §fOFF"
+    info: "§7Green lines = velocity | Red lines = acceleration | Yellow = sleeping"
+    separator: "§e═══════════════════════════════════"
+    enabled_msg: "§aPhysics visualization enabled for you"
+    disabled_msg: "§cPhysics visualization disabled for you"
+    player_count: "§7Players with debug: §f{0}"
+
+  reload:
+    start: "§eReloading physics configs..."
+    loading: "§e█ Loading configuration..."
+    unloading: "§e█ Unloading old data..."
+    complete: "§a✓ Plugin reloaded successfully!"
+    permission: "§c✗ Only operators can reload!"
+    failed: "§c✗ Reload failed!"
+    success_msg: "§a✓ All configs reloaded"
+    time: "§a✓ Reload time: {0}ms"
+
+  test:
+    start: "§e🔬 Starting physics stress test..."
+    preparing: "§e█ Preparing {0} blocks..."
+    spawning: "§e█ Spawning blocks..."
+    complete: "§a✓ Stress test: spawned §f{0}§a blocks"
+    wait: "§e█ Wait 5 seconds for results..."
+    results_header: "§e═════════════════════════════════"
+    results_title: "§6 Test results"
+    results_spawn_time: "§7Spawn time: §f{0}ms"
+    results_physics_fps: "§7Physics FPS: §f{0}"
+    results_cpu: "§7CPU usage: §f{0}%"
+    results_footer: "§e═════════════════════════════════"
+    failed: "§c✗ Stress test failed"
+    canceled: "§c✗ Stress test canceled"
+
+log:
+  config_loaded: "§a✓ Configuration loaded successfully!"
+  config_loading: "§6⚙️ Loading configuration..."
+  config_failed: "§c✗ Configuration load failed!"
+
+  materials_loaded: "§a✓ Materials loaded: §f{0}"
+  materials_loading: "§6⚙️ Loading materials..."
+  materials_failed: "§c✗ Materials load failed!"
+
+  messages_loaded: "§a✓ Messages initialized (§f{0}§a keys)"
+  messages_loading: "§6⚙️ Loading messages..."
+  messages_custom_language: "§aLoading custom language: §f{0}"
+  messages_language_fallback: "§eLanguage file not found! Using English."
+
+  physics_error: "§c⚠️ Physics error: §f{0}"
+  physics_update_error: "§c⚠️ Physics update error for entity"
+  physics_entity_spawn: "§7[Debug] Spawned physics entity"
+  physics_entity_kill: "§7[Debug] Removed physics entity"
+
+  task_started: "§a✓ Physics task started"
+  task_cancelled: "§c✗ Physics task cancelled"
+  task_interval: "§7Update interval: §f{0} tick(s)"
+
+  limit_warning: "§c⚠️ WARNING! Entity limit exceeded: §f{0}/{1}"
+  limit_exceeded: "§4✗ CRITICAL! Entity limit exceeded!"
+  limit_cleanup: "§e█ Cleaning old entities..."
+
+  plugin_enabled: "§a✓ PsyEngine fully loaded and enabled!"
+  plugin_disabled: "§c✓ PsyEngine disabled"
+
+  check_other_plugins: "§7Checking conflicts with other plugins..."
+  plugin_compatibility_ok: "§a✓ Compatibility: OK"
+  plugin_conflict_warning: "§e⚠️ Possible conflict with plugin: §f{0}"
+
+water:
+  entry: "§a✓ Entity entered water"
+  splash_sound: "§7~~ Splash sound"
+  splash_particles: "§7✨ Splash particles"
+  splash_large: "§a✓ Big splash!"
+  splash_small: "§7• Small splash"
+  buoyancy_effect: "§b✓ Buoyancy applied"
+  drag_increase: "§7✓ Water drag increased by {0}x"
+
+thermodynamics:
+  burning: "§c🔥 Entity is burning!"
+  melting: "§6🌪️ Entity is melting!"
+  exploding: "§4💥 Entity is exploding!"
+  freezing: "§b❄️ Entity is freezing!"
+  heat_absorbed: "§e✓ Heat absorbed"
+  temperature: "§7Temperature: §f{0}°C"
+  thermal_spark: "§c✨ Thermal sparks"
+
+collision:
+  impact: "§a✓ Impact! Force: §f{0}"
+  break: "§4✗ Entity broke!"
+  bounce: "§a✓ Bounce! (§f{0}§a%)"
+  sound_effect: "§7♪ Collision sound"
+  particle_effect: "§7✨ Collision particles"
+  no_damage: "§7• Damage blocked"
+  entity_hit: "§c✗ Hit entity! Damage: §f{0}"
+  entity_safe: "§7• Entity damage disabled in config"
+
+sleep:
+  enter: "§b💤 Entity fell asleep"
+  exit: "§a⚡ Entity woke up!"
+  timer: "§7Sleep timer: §f{0} tick(s)"
+  solidify: "§7→ Solidifying into a block..."
+  solidified: "§a✓ Solidified into a real block"
+  solidify_fail: "§7• Failed to solidify"
+  sleeping_count: "§7Sleeping entities: §f{0}"
+
+performance:
+  entities_high: "§4✗ WARNING! Too many active entities!"
+  entities_medium: "§6⚠️ Moderate physics load"
+  entities_low: "§a✓ Low physics load"
+  cleanup_started: "§e█ Starting cleanup..."
+  cleanup_done: "§a✓ Cleaned up §f{0}§a entities"
+  safe_mode_info: "§e⚠️ Safe mode slows physics for stability"
+  optimization_tip: "§7Tip: Enable sleep-mode for better performance"
+
+effects:
+  particles_on: "§a✓ Particles: ON"
+  particles_off: "§c✗ Particles: OFF"
+  sounds_on: "§a✓ Sounds: ON"
+  sounds_off: "§c✗ Sounds: OFF"
+  all_effects_on: "§a✓ All effects enabled"
+  all_effects_off: "§c✗ All effects disabled"
+  collision_spark: "§c✨ Collision sparks"
+  water_splash: "§b💧 Water splash"
+  thermal_effect: "§e🔥 Thermal effect"
+  sleep_indicator: "§b💤 Sleep indicator"
+
+config:
+  library_mode: "§6[Library Mode] Library mode enabled"
+  with_commands: "§6[Plugin Mode] Command interface enabled"
+  safe_mode_on: "§e⚠️ Safe mode: ON (slower, more stable)"
+  safe_mode_off: "§a✓ Safe mode: OFF (faster, may be less stable)"
+  permissions_enabled: "§a✓ Permissions system: ON"
+  permissions_disabled: "§c✗ Permissions system: OFF"
+  auto_cleanup_on: "§a✓ Auto-cleanup: ON"
+  auto_cleanup_off: "§c✗ Auto-cleanup: OFF"
+  thermal_enabled: "§a✓ Thermodynamics: ON"
+  thermal_disabled: "§c✗ Thermodynamics: OFF"
+  block_breaking_enabled: "§a✓ Block breaking: ALLOWED"
+  block_breaking_disabled: "§c✗ Block breaking: DISABLED"
+  entity_damage_enabled: "§a✓ Entity damage: ALLOWED"
+  entity_damage_disabled: "§c✗ Entity damage: DISABLED"
+
+world:
+  block_placed: "§7• Block placed by physics"
+  block_broken: "§c✗ Block broken by physics"
+  entity_damaged: "§c✗ Entity damaged by physics"
+  out_of_bounds: "§7→ Entity out of world bounds"
+  entity_removed: "§7✓ Entity removed"
+
+info:
+  version: "§6PsyEngine v1.0.0"
+  author: "§6Entervalov"
+  license: "§6MIT License"
+  compatibility: "§6Spigot 1.20+ | Java 21+"
+  website: "§6https://github.com/PsyEngine"
+  support: "§6Support in Discord: @entervalov"
+
+  physics_enabled: "§a✓ Physics engine: ON"
+  physics_disabled: "§c✗ Physics engine: OFF"
+  debug_mode_on: "§e⚠️ Debug mode: ON"
+  debug_mode_off: "§7Debug mode: OFF"
+
+  welcome: "§e╔════════════════════════════════════╗"
+  welcome_title: "§e║ §6Welcome to PsyEngine!§e              ║"
+  welcome_desc: "§e║ §7A realistic physics engine§e         ║"
+  welcome_footer: "§e╚════════════════════════════════════╝"
+
+  tip: "§7💡 Tip: type §f/physics§7 for help"
+  tips:
+    - "§7💡 Use /physics debug to visualize vectors"
+    - "§7💡 Different materials have different mass and bounce"
+    - "§7💡 Sleeping entities improve performance"
+    - "§7💡 Buoyancy works in water (and lava if you add it)"
+    - "§7💡 Stress test helps estimate performance"
+    - "§7💡 Configure physics in config.yml"
+    - "§7💡 Use this plugin as a library for your own plugins"
